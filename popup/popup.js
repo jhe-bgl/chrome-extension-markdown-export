@@ -17,14 +17,16 @@ exportBtn.addEventListener('click', async () => {
     }
 
     // Inject content script and get page data
-    const results = await chrome.scripting.executeScript({
+    // Inject turndown library first (use absolute path from extension root)
+    await chrome.scripting.executeScript({
       target: { tabId: tab.id },
-      files: ['lib/turndown.min.js']
+      files: ['/lib/turndown.min.js']
     });
 
+    // Then inject and execute content script (use absolute path from extension root)
     const [pageData] = await chrome.scripting.executeScript({
       target: { tabId: tab.id },
-      files: ['content/content.js']
+      files: ['/content/content.js']
     });
 
     if (!pageData || !pageData.result) {
@@ -137,17 +139,26 @@ async function createZipFile(markdown, imageBlobs, pageTitle) {
 }
 
 async function downloadZip(zipBlob, pageTitle) {
-  const url = URL.createObjectURL(zipBlob);
   const filename = `${sanitizeFilename(pageTitle) || 'page'}.zip`;
 
-  await chrome.downloads.download({
-    url: url,
-    filename: filename,
-    saveAs: true
-  });
+  // Create blob URL
+  const url = URL.createObjectURL(zipBlob);
 
-  // Clean up object URL after a delay
-  setTimeout(() => URL.revokeObjectURL(url), 10000);
+  // Create a temporary anchor element and click it
+  // This works reliably in both Chrome and Firefox without size limits
+  const a = document.createElement('a');
+  a.style.display = 'none';
+  a.href = url;
+  a.download = filename;
+
+  document.body.appendChild(a);
+  a.click();
+
+  // Clean up
+  setTimeout(() => {
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, 100);
 }
 
 function sanitizeFilename(filename) {

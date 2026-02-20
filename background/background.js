@@ -1,3 +1,12 @@
+// Import polyfill for Firefox compatibility
+// This makes chrome.* APIs work with promises in Firefox
+try {
+  importScripts('../lib/browser-polyfill.min.js');
+} catch (e) {
+  // Chrome doesn't support importScripts in service workers in some contexts
+  // The polyfill will be available via the global scope if needed
+}
+
 // Background service worker for handling image fetches
 // This runs with more permissive CORS policies than content scripts
 
