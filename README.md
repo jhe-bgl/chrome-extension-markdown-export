@@ -12,6 +12,10 @@ A Chrome extension that converts web pages to Markdown format, downloads all ima
 
 ## Installation
 
+Firefox: https://addons.mozilla.org/en-US/firefox/addon/page-to-markdown-exporter/
+
+OR
+
 1. Open Chrome and navigate to `chrome://extensions/`
 2. Enable "Developer mode" (toggle in the top right)
 3. Click "Load unpacked"
