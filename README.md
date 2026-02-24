@@ -14,7 +14,7 @@ A Chrome extension that converts web pages to Markdown format, downloads all ima
 
 Chrome: https://chromewebstore.google.com/detail/obelbfpnkkbchkfabiflbndofhepobpd?utm_source=item-share-cb
 
-Firefox: https://addons.mozilla.org/en-US/firefox/addon/page-to-markdown-exporter/
+Firefox: https://addons.mozilla.org/en-US/firefox/addon/page-to-markdown-exporter
 
 OR
 
